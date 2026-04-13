@@ -1,0 +1,53 @@
+---
+title: "HW2"
+author: "Ben Schanzer"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list = ls())
+```
+
+## Question 1
+
+Using Krackhardt's Kite graph and matrix algebra, write an R program that creates a distance matrix for the graph. Note that you must use matrix algebra for this problem — you can check your results using the distance function, but do not generate them using that function.
+
+```{r q1}
+
+```
+
+## Question 2
+
+Using Borgatti's classification of network flows, determine two different centrality measures you could use in the following contexts. The different centrality measures should be for different theoretical goals. Explain your answer in several sentences. If no centrality measure is entirely appropriate, explain why.
+
+**Instagram Influencer**
+
+**Street Intersection**
+
+**Politician in Two-Party System**
+
+## Question 3
+
+Using the variables we measured in class from Marsden and McPherson, construct a dataset that represents your egocentric network. Remember to also do the connections between alters. You can use the network you created in Problem Set #1. (Do not include the questions on loneliness and social pressure and include only the data for you and your alters.) Each variable should be stored as an attribute to the igraph object. Treat the edges as undirected. Show one node with all of its attributes.
+
+```{r q3}
+
+```
+
+## Question 4
+
+For each node in the graph, measure the proportion of the rest of the graph with the same values on gender, race/ethnicity, town size, and income. Measure the average distance between the education values as completed in class. Produce a dataframe in R that lists each individual (including yourself) with each of the measures as variables. This is not a network dataset, but instead a list of individual properties. Show the first five rows.
+
+```{r q4}
+
+```
+
+## Question 5
+
+Combine the data from problem 4 with the edgelist, so that the information from each node is attached to the edgelist with values for both nodes (x & y) on the same row. Show the first five rows of the dataframe.
+
+```{r q5}
+
+```

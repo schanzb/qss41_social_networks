@@ -86,7 +86,8 @@ edges <- c("Ben", "Jonah",
            "Emily", "Danny",
            "Emily", "Mom",
            "Danny", "Mom",
-           "Marty", "Avery"
+           "Marty", "Avery",
+           "Ben", "Larkin"
 )
 
 edge_list <- matrix(edges, ncol = 2, byrow = TRUE)
@@ -96,3 +97,74 @@ plot(g,
      vertex.size = 25, 
      edge.curved = 0.25, 
      )
+
+# QUESTION 4
+# Imagine some research question that you find interesting and could be addressed by looking at how individuals relate to one another.  Explain your idea in a paragraph.  In a second paragraph, suggest some possibilities for acquiring data to answer the question. Determine whether you should use a directed or undirected graph, whether weights would be useful and what they would be, and speculate on whether the graph would be likely to have multiple components.
+
+# QUESTION 4
+
+# I am interested in conspiracy theories (CTs) and how they travel and evolve 
+# through social networks. Specifically, I want to map networks of conspiracy 
+# believers to determine whether there are central nodes — highly connected 
+# individuals who act as hubs for spreading new conspiracies through a community. 
+# Beyond just the spread of individual theories, I am also curious whether 
+# believing in one conspiracy predisposes someone to believe in others. In other 
+# words, is someone who believes in Theory A more likely to adopt an unrelated 
+# Theory B simply because they are already embedded in a conspiratorial network, 
+# or are there other factors — such as political identity, media diet, or 
+# personal relationships — that determine which specific theories someone adopts? 
+# Understanding this could help researchers identify whether conspiracy belief 
+# is driven more by network influence or by individual predisposition.
+
+# Data could be acquired by scraping public posts and interactions on platforms 
+# like Facebook, Twitter/X, or Reddit, using keyword filtering and natural 
+# language processing to identify users expressing conspiratorial beliefs. 
+# Connections between users could be established through follower relationships, 
+# replies, retweets, or shared group memberships. If the goal is to track the 
+# flow of a specific conspiracy theory through a network, a directed graph would 
+# be appropriate, since we care about who transmitted the theory to whom. This 
+# would also allow us to work backwards from widespread belief to identify the 
+# original source or sources. If instead the goal is simply to map the community 
+# of conspiracy believers and their relationships, an undirected graph would 
+# suffice. Weights could serve multiple purposes: on edges, they could represent 
+# the frequency or intensity of interaction between two individuals, while node 
+# attributes could track how many distinct theories each person believes. 
+# Regarding components, the graph would likely have one large connected component 
+# encompassing the main conspiracy community, but there may be smaller isolated 
+# components representing niche or fringe groups that do not interact with the 
+# broader network — for example, a small group focused on a hyper-local 
+# conspiracy that has no overlap with mainstream CT communities.
+
+
+# QUESTION 5
+# Find the definition of the diameter of a graph. Find the igraph function for measuring diameter.  Using the e-mail network from the data folder on Canvas as an undirected graph : 
+#   Simplify the network
+# Determine its diameter
+# Using bootstrapping, determine whether the diameter has a statistically significant difference from a null model of a random graph with the same degree distribution.
+
+# Diameter Definition: "the diameter of a connected (un)directed graph is the farthest distance between any two of its vertices"
+ecomp = as.data.frame(read.table(file = "../Data/email_main_component.txt", sep = "|"))
+email_g = graph_from_data_frame(ecomp, directed=FALSE)
+email_g = simplify(email_g)
+
+diameter(email_g, directed = F)
+
+# BOOTSTRAPPING
+d1 = degree(email_g)
+t1 = numeric(1000) # vector with 1000 positions, all start as 0
+
+# 1000 versions of a randomized Monte Carlo process
+# basically randomizes the edges with same degree distribution
+# What does a random graph with the same degree distribution look like?
+# This gives us a null hypothesis
+for(i in 1:1000){
+  randnet = sample_degseq(d1)
+  randnet = simplify(randnet)
+  t1[i] = diameter(randnet, directed = F)
+}
+
+email_diameter = diameter(email_g, directed = F)
+z_score = (email_diameter - mean(t1)) / sd(t1)
+z_score
+
+# The high Z Score >20 tells us there is statistical significance that the diameter of the email network is higher than the diameter of a similar random network with the same degree (Z>1.96 is sig)
